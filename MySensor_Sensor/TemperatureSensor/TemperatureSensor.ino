@@ -22,7 +22,6 @@ MyMessage msg(0,V_TEMP);
 
 void before()
 {
-  Serial.print("Launching Before() routine...\n");  
   // Startup up the OneWire library
   sensors.begin();
 }
@@ -30,7 +29,6 @@ void before()
 void setup()  
 { 
   // requestTemperatures() will not block current thread
-  Serial.print("Setting Up temperature Sensor ...");
   sensors.setWaitForConversion(false);
 }
 
@@ -38,6 +36,7 @@ void presentation()
 {
   // Send the sketch version information to the gateway and Controller
   sendSketchInfo("Temperature Sensor", VERSION );
+  present(0,S_TEMP,"Sens0 : Temperature",false);
 }
 
 void loop()     
@@ -54,7 +53,7 @@ void loop()
   // Read temperatures and send them to controller 
   // Fetch and round temperature to one decimal
   float temperature = static_cast<float>(static_cast<int>((getControllerConfig().isMetric?sensors.getTempCByIndex(0):sensors.getTempFByIndex(0)) * 10.)) / 10.;
-  
+  Serial.print(temperature);
   if (temperature != -127.00 && temperature != 85.00) 
   {
     // Send in the new temperature
